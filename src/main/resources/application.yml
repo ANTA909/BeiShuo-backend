@@ -34,7 +34,7 @@ logging:
 # 数据库API配置（等待实际服务地址）
 database:
   api:
-    base-url: http://localhost:8081/api/database
+    base-url: http://localhost:8081/api/database  # 改回 base-url
     connect-timeout: 5000
     read-timeout: 10000
     retry-times: 3
