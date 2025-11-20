@@ -36,3 +36,27 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Python ###
+python/__pycache__/
+python/*.py[cod]
+python/*$py.class
+python/*.so
+python/.Python
+python/env/
+python/venv/
+python/ENV/
+python/env.bak/
+python/venv.bak/
+python/.venv
+python/*.egg-info/
+python/dist/
+python/build/
+python/.eggs/
+python/.pytest_cache/
+python/.mypy_cache/
+python/.coverage
+python/htmlcov/
+python/.tox/
+python/.env
+python/logs/*.log
