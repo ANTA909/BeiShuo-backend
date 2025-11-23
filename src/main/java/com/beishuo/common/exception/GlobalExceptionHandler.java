@@ -46,14 +46,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<Map<String, String>> handleValidationException(MethodArgumentNotValidException e) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, Object> details = new HashMap<>();
+        Map<String, String> fieldErrors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            fieldErrors.put(fieldName, errorMessage);
         });
-        logger.warn("参数验证失败: {}", errors);
-        return Result.error(ResultCode.BAD_REQUEST, "参数验证失败");
+        details.put("fields", fieldErrors);
+        logger.warn("参数验证失败: {}", fieldErrors);
+        return Result.error("VALIDATION_ERROR", "数据验证失败", details);
     }
 
     /**
@@ -62,14 +64,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<Map<String, String>> handleBindException(BindException e) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, Object> details = new HashMap<>();
+        Map<String, String> fieldErrors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            fieldErrors.put(fieldName, errorMessage);
         });
-        logger.warn("参数绑定失败: {}", errors);
-        return Result.error(ResultCode.BAD_REQUEST, "参数绑定失败");
+        details.put("fields", fieldErrors);
+        logger.warn("参数绑定失败: {}", fieldErrors);
+        return Result.error("VALIDATION_ERROR", "数据验证失败", details);
     }
 
     /**

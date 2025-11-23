@@ -27,124 +27,65 @@ public class KnowledgeController {
     // private KnowledgeService knowledgeService;
 
     /**
-     * 获取知识库列表
+     * 获取知识库首页
      */
-    @GetMapping("/list")
-    public Result<PageResult<Map<String, Object>>> getKnowledgeList(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String dynasty,
-            @RequestParam(required = false) String category) {
+    @GetMapping("/home")
+    public Result<Map<String, Object>> getKnowledgeHome(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String period) {
 
-        // TODO: 调用KnowledgeService获取列表
-        // PageResult<Map<String, Object>> result = knowledgeService.getKnowledgeList(
-        //     page, size, keyword, dynasty, category);
-        // return Result.success(result);
+        // TODO: 调用KnowledgeService获取首页数据
+        Map<String, Object> result = new HashMap<>();
+        result.put("categories", new java.util.ArrayList<>());
+        result.put("featured", new java.util.ArrayList<>());
+        result.put("recent_articles", new java.util.ArrayList<>());
 
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "列表查询功能待实现");
+        return Result.success(result);
     }
 
     /**
-     * 获取知识库详情
+     * 获取文章详情
      */
-    @GetMapping("/{id}")
-    public Result<Map<String, Object>> getKnowledgeDetail(@PathVariable Long id) {
+    @GetMapping("/articles/{article_id}")
+    public Result<Map<String, Object>> getArticleDetail(@PathVariable("article_id") Long articleId) {
         // TODO: 调用KnowledgeService获取详情
-        // Map<String, Object> detail = knowledgeService.getKnowledgeDetail(id);
-        // return Result.success(detail);
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", articleId);
+        result.put("title", "");
+        result.put("content", "");
+        result.put("excerpt", "");
+        result.put("cover_image", "");
+        result.put("author", new HashMap<>());
+        result.put("metadata", new HashMap<>());
+        result.put("stats", new HashMap<>());
+        result.put("related_articles", new java.util.ArrayList<>());
 
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "详情查询功能待实现");
+        return Result.success(result);
     }
 
     /**
      * 搜索知识库
      */
     @GetMapping("/search")
-    public Result<List<Map<String, Object>>> searchKnowledge(
-            @RequestParam String keyword,
+    public Result<Map<String, Object>> searchKnowledge(
+            @RequestParam("q") String keyword,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String category,
             @RequestParam(required = false) String dynasty,
-            @RequestParam(required = false) String tags,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size) {
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "20") Integer per_page) {
 
         // TODO: 调用KnowledgeService搜索知识库
-        // List<Map<String, Object>> results = knowledgeService.searchKnowledge(
-        //     keyword, dynasty, tags, page, size);
-        // return Result.success(results);
+        Map<String, Object> result = new HashMap<>();
+        result.put("query", keyword);
+        result.put("total_results", 0);
+        result.put("results", new java.util.ArrayList<>());
+        result.put("suggestions", new java.util.ArrayList<>());
+        result.put("facets", new HashMap<>());
 
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "搜索功能待实现");
+        return Result.success(result);
     }
 
-    /**
-     * 收藏知识库
-     */
-    @PostMapping("/{id}/favorite")
-    public Result<?> favoriteKnowledge(
-            @PathVariable Long id,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-
-        Long userId = getUserIdFromToken(authHeader);
-        if (userId == null) {
-            return Result.error(ResultCode.UNAUTHORIZED);
-        }
-
-        // TODO: 调用KnowledgeService收藏知识库
-        // knowledgeService.favoriteKnowledge(id, userId);
-        // return Result.success();
-
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "收藏功能待实现");
-    }
-
-    /**
-     * 取消收藏
-     */
-    @DeleteMapping("/{id}/favorite")
-    public Result<?> unfavoriteKnowledge(
-            @PathVariable Long id,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-
-        Long userId = getUserIdFromToken(authHeader);
-        if (userId == null) {
-            return Result.error(ResultCode.UNAUTHORIZED);
-        }
-
-        // TODO: 调用KnowledgeService取消收藏
-        // knowledgeService.unfavoriteKnowledge(id, userId);
-        // return Result.success();
-
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "取消收藏功能待实现");
-    }
-
-    /**
-     * 推荐知识库
-     */
-    @GetMapping("/recommend")
-    public Result<List<Map<String, Object>>> getRecommendKnowledge(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size) {
-
-        // TODO: 调用KnowledgeService获取推荐
-        // List<Map<String, Object>> results = knowledgeService.getRecommendKnowledge(page, size);
-        // return Result.success(results);
-
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "推荐功能待实现");
-    }
-
-    /**
-     * 最新收录
-     */
-    @GetMapping("/latest")
-    public Result<List<Map<String, Object>>> getLatestKnowledge(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size) {
-
-        // TODO: 调用KnowledgeService获取最新收录
-        // List<Map<String, Object>> results = knowledgeService.getLatestKnowledge(page, size);
-        // return Result.success(results);
-
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR, "最新收录功能待实现");
-    }
 
     /**
      * 从Token中获取用户ID

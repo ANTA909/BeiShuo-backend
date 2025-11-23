@@ -60,11 +60,11 @@ async def general_exception_handler(request: Request, exc: Exception):
     logger.exception(f"系统异常: {exc}")
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content=Result.error(ResultCode.INTERNAL_SERVER_ERROR).dict()
+        content=Result.error(ResultCode.INTERNAL_SERVER_ERROR, "系统异常，请稍后重试").dict()
     )
 
 # 注册路由
-app.include_router(v1_router, prefix="/api")
+app.include_router(v1_router, prefix="/api/v1")
 
 @app.get("/health")
 async def health_check():
